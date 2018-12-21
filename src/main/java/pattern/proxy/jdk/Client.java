@@ -1,4 +1,4 @@
-package pattern.jdk;
+package pattern.proxy.jdk;
 
 import java.io.FileOutputStream;
 import sun.misc.ProxyGenerator;
@@ -80,7 +80,7 @@ public final class $Proxy1 extends Proxy implements Subjcet {
     try {
       m1 = Class.forName("java.lang.Object").getMethod("equals", Class.forName("java.lang.Object"));
       m2 = Class.forName("java.lang.Object").getMethod("toString");
-      m3 = Class.forName("pattern.jdk.Subjcet").getMethod("request");
+      m3 = Class.forName("pattern.proxy.jdk.Subjcet").getMethod("request");
       m0 = Class.forName("java.lang.Object").getMethod("hashCode");
     } catch (NoSuchMethodException var2) {
       throw new NoSuchMethodError(var2.getMessage());

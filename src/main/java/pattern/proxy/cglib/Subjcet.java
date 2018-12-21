@@ -1,4 +1,4 @@
-package pattern.staticed;
+package pattern.proxy.cglib;
 
 public interface Subjcet {
 

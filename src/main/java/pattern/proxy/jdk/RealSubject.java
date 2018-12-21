@@ -1,4 +1,4 @@
-package pattern.jdk;
+package pattern.proxy.jdk;
 
 public class RealSubject implements Subjcet {
 

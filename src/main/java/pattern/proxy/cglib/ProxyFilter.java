@@ -1,4 +1,4 @@
-package pattern.cglib;
+package pattern.proxy.cglib;
 
 import java.lang.reflect.Method;
 import net.sf.cglib.proxy.CallbackFilter;

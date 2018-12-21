@@ -1,4 +1,4 @@
-package pattern.cglib;
+package pattern.proxy.cglib;
 
 import net.sf.cglib.core.DebuggingClassWriter;
 

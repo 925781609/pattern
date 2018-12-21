@@ -1,4 +1,4 @@
-package pattern.jdk;
+package pattern.proxy.jdk;
 
 
 import java.lang.reflect.InvocationHandler;

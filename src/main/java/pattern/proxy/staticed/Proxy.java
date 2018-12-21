@@ -1,4 +1,4 @@
-package pattern.staticed;
+package pattern.proxy.staticed;
 
 
 public class Proxy implements Subjcet {
