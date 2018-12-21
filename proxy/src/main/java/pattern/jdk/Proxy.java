@@ -28,5 +28,4 @@ public class Proxy implements InvocationHandler {
     return null;
   }
 
-
 }
