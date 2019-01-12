@@ -170,4 +170,92 @@ public class DellMouseFactory implements MouseFactory{
    ```
 
 
-   ​
+#####    5.单例模式
+
+​	保证一个类仅有一个实例， 并提供一个访问它的全局访问点
+
+​	应用场景： Listener本身单例， 日历Calander， IoC容器， 配置信息Config
+
+​	技术方案：保证运行过程中只有一份 
+
+​	注意事项： 单例模式注意构造函数 定义为private，防止外部调用 ，此外极端情况下还需要考虑克隆、反序列化、反射对单例的破坏，可以参考：https://zhuanlan.zhihu.com/p/28491630
+
+​	技术实现方案包括: (此外还有枚举法)
+
+  1.  饿汉式：
+
+      在类加载的时候立即初始化， 并且创建单例对象
+
+      优点： 没有任何的锁， 执行效率高， 绝对线程安全（在线程还没有出现之前就已经实例化了）
+
+      缺点： 类架子的时候就初始化， 不管是否使用都占用空间
+
+      代码示例：
+
+      ```java
+      public class Singleton {
+
+        private static Singleton singleton = new Singleton();
+
+        // 私有构造方法，防止被实例化
+        private Singleton() {
+        }
+
+        public static Singleton getInstance() {
+          return singleton;
+        }
+      }
+
+      ```
+
+		2. 懒汉式： 默认不实例化， 只有使用的时候才实例化， 又可以分为静态内部类、双重锁检查、登记式
+
+     静态内部类：  内部类只有在外部类被调用时，才会被加载，内部类在方法 调用前被初始化
+
+     ```java
+     public class Singleton {
+
+       // 私有构造方法，防止被实例化
+       private Singleton() {
+       }
+
+       private static class SingletonHolder {
+         private static final Singleton INSTANCE = new Singleton();
+       }
+
+       private static final Singleton getInstance() {
+         return SingletonHolder.INSTANCE;
+       }
+     }
+     ```
+
+     双重锁检查：
+
+     ```java
+     public class Singleton {
+
+       // 对singleton对象使用volatile关键字进行限制，保证其对所有线程的可见性，并且禁止对其进行指令重排序优化。
+       private static volatile Singleton singleton = null;
+
+       private Singleton() {
+       }
+
+       public static Singleton getSingleton() {
+         if (singleton == null) {
+           synchronized (Singleton.class) {
+             if (singleton == null) {
+               singleton = new Singleton();
+             }
+           }
+         }
+         return singleton;
+       }
+     }
+     ```
+
+     注册登记式（spring种常用，待补充）
+
+6. ##### 原型模式
+
+
+
