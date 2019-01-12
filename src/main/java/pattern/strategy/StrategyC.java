@@ -1,4 +1,4 @@
-package pattern.Strategy;
+package pattern.strategy;
 
 public class StrategyC implements Strategy {
 

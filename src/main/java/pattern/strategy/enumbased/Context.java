@@ -1,4 +1,4 @@
-package pattern.Strategy.enumbased;
+package pattern.strategy.enumbased;
 
 public class Context {
 

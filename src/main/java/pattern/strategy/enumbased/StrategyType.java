@@ -1,9 +1,9 @@
-package pattern.Strategy.enumbased;
+package pattern.strategy.enumbased;
 
-import pattern.Strategy.Strategy;
-import pattern.Strategy.StrategyA;
-import pattern.Strategy.StrategyB;
-import pattern.Strategy.StrategyC;
+import pattern.strategy.Strategy;
+import pattern.strategy.StrategyA;
+import pattern.strategy.StrategyB;
+import pattern.strategy.StrategyC;
 
 public enum StrategyType {
   STRATEGYA(new StrategyA()),
