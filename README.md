@@ -208,54 +208,52 @@ public class DellMouseFactory implements MouseFactory{
 
       ```
 
-		2. 懒汉式： 默认不实例化， 只有使用的时候才实例化， 又可以分为静态内部类、双重锁检查、登记式
+  2.  懒汉式： 默认不实例化， 只有使用的时候才实例化， 又可以分为静态内部类、双重锁检查、登记式
 
-     静态内部类：  内部类只有在外部类被调用时，才会被加载，内部类在方法 调用前被初始化
+      静态内部类：  内部类只有在外部类被调用时，才会被加载，内部类在方法 调用前被初始化
+
 
      ```java
      public class Singleton {
-
+    
        // 私有构造方法，防止被实例化
        private Singleton() {
        }
-
+    
        private static class SingletonHolder {
          private static final Singleton INSTANCE = new Singleton();
        }
-
+    
        private static final Singleton getInstance() {
          return SingletonHolder.INSTANCE;
        }
      }
      ```
 
-     双重锁检查：
+ 双重锁检查：
 
-     ```java
-     public class Singleton {
+ ```java
+ public class Singleton {
 
-       // 对singleton对象使用volatile关键字进行限制，保证其对所有线程的可见性，并且禁止对其进行指令重排序优化。
-       private static volatile Singleton singleton = null;
+   // 对singleton对象使用volatile关键字进行限制，保证其对所有线程的可见性，并且禁止对其进行指令重排序优化。
+   private static volatile Singleton singleton = null;
 
-       private Singleton() {
-       }
+   private Singleton() {
+   }
 
-       public static Singleton getSingleton() {
+   public static Singleton getSingleton() {
+     if (singleton == null) {
+       synchronized (Singleton.class) {
          if (singleton == null) {
-           synchronized (Singleton.class) {
-             if (singleton == null) {
-               singleton = new Singleton();
-             }
-           }
+           singleton = new Singleton();
          }
-         return singleton;
        }
      }
-     ```
+     return singleton;
+   }
+ }
+ ```
 
-     注册登记式（spring种常用，待补充）
+ 注册登记式（spring种常用，待补充）
 
 6. ##### 原型模式
-
-
-
