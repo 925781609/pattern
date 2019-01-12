@@ -14,7 +14,7 @@
 
    UML图：
 
-![](doc/Simple factory.jpg)
+![image](https://github.com/925781609/pattern/blob/master/doc/Simple%20factory.jpg)
 
 ​	代码示例：
 
@@ -81,9 +81,7 @@ public class DellMouseFactory implements MouseFactory{
 
    ![](doc/Builder.jpg)
 
-   ​	代码示例：
-
-   ​	
+   ​	代码示例： 详细的参考https://github.com/925781609/pattern/tree/master/src/main/java/pattern/builder
 
    ```java
    // 具体产品，建造后对象，即为Product
@@ -139,7 +137,7 @@ public class DellMouseFactory implements MouseFactory{
    	
    	@Override
    	public Computer getComputer(){
-   		returncomputer;
+   		return computer;
        }
    }
    	
@@ -154,19 +152,20 @@ public class DellMouseFactory implements MouseFactory{
    }
 
    // 建造者使用示例
-   public class Client{
-   	public staic void main(String [] args){
-    		Director director = new Director();
-     		Builder builder = new ConcreteBuilder();
-         
-         	// 开始建造对象
-   		director.Construct(builder);
-   		
-         	// 获得建造的对象
-   		Computer computer = builder.GetComputer();
+   public class Client {
 
-   		computer.Show()；
-   	}
+     public static void main(String[] args) {
+       Director director = new Director();
+       Builder builder = new ConcreteBuilder();
+
+       // 开始建造对象
+       director.construct(builder);
+
+       // 获得建造的对象
+       Computer computer = builder.getComputer();
+
+       computer.show();
+     }
    }
    ```
 
