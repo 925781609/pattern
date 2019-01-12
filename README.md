@@ -40,7 +40,7 @@ public class MouseFactory{
 
 ​	UML图：
 
-![](doc/Factory Pattern.png)
+![](doc/Factory Method.png)
 
 代码示例：
 
@@ -71,7 +71,7 @@ public class DellMouseFactory implements MouseFactory{
 
    UML图：
 
-   ![](doc/Abstract Factor Method.png)
+   ![](doc/Abstract Factory.png)
 
    ##### 4.建造者模式
 
