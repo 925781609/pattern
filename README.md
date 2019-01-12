@@ -257,3 +257,75 @@ public class DellMouseFactory implements MouseFactory{
  注册登记式（spring种常用，待补充）
 
 6. ##### 原型模式
+
+#### 结构型模式：
+
+1. ##### 代理模式
+
+   代理角色通常会持有被代理角色对象的引用，以便代理角色完成工作之前或之后找到被代理对象，能够通知被代理对象
+
+   代理分静态代理和动态代理：
+
+   1. 静态代理：
+
+      有目标类的引用，但是类型固定（为目标类）， 否则无法使用目标类的方法
+
+      需要定义接口或者父类，代理对象与被代理对象一起实现相同的接口或是继承相同的父类
+
+   2. 动态代理:（通过字节码重组）
+
+      JDK代理： 目标类要实现某一接口
+
+      ​	生成一个新的类，新的类实现了被代理类的所有实现。在新生成类的方法中调用目标类原来的方法
+
+      CGLIB代理： 不需要实现相同的接口
+
+      ​	 通过字节码重组生成新的类，继承目标类
+
+   UML：
+
+   ​	![image](https://github.com/925781609/pattern/blob/master/doc/Proxy.jpg)
+
+   代码实现:  关于动态代理的实现详见https://github.com/925781609/pattern/tree/master/src/main/java/pattern/proxy
+
+   ```java
+   interface Subject {
+
+     void request();
+   }
+
+   class RealSubject implements Subject {
+
+     public void request() {
+       System.out.println("request");
+     }
+   }
+
+   class Proxy implements Subject {
+
+     private Subject subject;
+
+     public Proxy(Subject subject) {
+       this.subject = subject;
+     }
+
+     @Override
+     public void request() {
+       System.out.println("PreProcess");
+       subject.request();
+       System.out.println("PostProcess");
+     }
+   }
+
+   // client
+   public class Client {
+
+     public static void main(String[] args) {
+       RealSubject subject = new RealSubject();
+       Proxy p = new Proxy(subject);
+       p.request();
+     }
+   }
+   ```
+
+   ​
