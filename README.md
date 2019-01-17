@@ -327,5 +327,5 @@ public class DellMouseFactory implements MouseFactory{
      }
    }
    ```
-
+2. ##### 适配器模式
    ​
