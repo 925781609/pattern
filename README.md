@@ -262,6 +262,8 @@ public class DellMouseFactory implements MouseFactory{
 
 1. ##### 代理模式
 
+   技术手段： jdk proxy，cglib（字节码重组框架），AspectJ（spring）， asm
+
    代理角色通常会持有被代理角色对象的引用，以便代理角色完成工作之前或之后找到被代理对象，能够通知被代理对象
 
    代理分静态代理和动态代理：
@@ -328,7 +330,7 @@ public class DellMouseFactory implements MouseFactory{
    }
    ```
 
-2. ##### 适配器模式
+ ##### 2.适配器模式
    ​定义一个包装类， 把适配的类(Adaptee)的api转换成目标类(Target)的api
 
    强调的是兼容， 不改变原来的代码也能实现新的需求， 类似于VGA-HDMI
@@ -339,11 +341,11 @@ public class DellMouseFactory implements MouseFactory{
 
    适配器模式有两种实现方式：
 
-   1. 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
+      1. 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
 
    ![img](https://github.com/925781609/pattern/blob/master/doc/Class%20Adapter.png)
 
-   2. 对象适配器：将原来的类注入进来，调用原来的方法
+      2. 对象适配器：将原来的类注入进来，调用原来的方法
 
    ![img](https://github.com/925781609/pattern/blob/master/doc/Object%20Adapter.png)
 
@@ -376,4 +378,51 @@ public class DellMouseFactory implements MouseFactory{
    }
    ```
 
-   ​
+ ##### 3.装饰器模式
+​     委派+适配器 为了扩展和增强，要满足is-a关系（同源同宗，也不一定有is-a关系，只要是增强就算）
+
+​     应用场景： IO流，DataSource是connection的装饰器，Spring中Detector结尾， Wrapper结尾
+
+​     为了某个实现类在不修改原始类的基础上，进行动态地覆盖或增加方法原来的功能依旧对外开放， 依旧保留，新的功能同样也可以使用
+
+​     UML 图： （原始版本比较复杂，实际都是用其简化版）
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Decorator.png)
+
+​      代码示例：
+
+```java
+public interface Component {
+  void sampleOperation();
+}
+
+public class ConcreteComponent implements Component {
+  @Override
+  public void sampleOperation() {
+    System.out.println("sampleOperation method in ConcreteComponent");
+  }
+}
+
+public class ConcreteDecorator implements Component {
+
+  private Component component;
+
+  public ConcreteDecorator(Component component) {
+    this.component = component;
+  }
+
+  @Override
+  public void sampleOperation() {
+    component.sampleOperation();
+    // 其他业务逻辑代码
+    System.out.println("为了扩展增加的代码");
+  }
+}
+```
+
+装饰器和适配器模式的区别
+
+| 装饰器模式 | 是一种非常特别的适配器模式 | 装饰者 is-a 被装饰者             | 注重的是覆盖和扩展 |
+| ----- | ------------- | ------------------------- | --------- |
+| 适配器模式 |               | 可以使用代理(has-a)或者继承(is-a)实现 | 注重的是兼容和转换 |
+
