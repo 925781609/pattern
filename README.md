@@ -260,7 +260,7 @@ public class DellMouseFactory implements MouseFactory{
 
 #### 结构型模式：
 
-1. ##### 代理模式
+   ##### 1.代理模式
 
    技术手段： jdk proxy，cglib（字节码重组框架），AspectJ（spring）， asm
 
@@ -286,7 +286,7 @@ public class DellMouseFactory implements MouseFactory{
 
    UML：
 
-   ​	![image](https://github.com/925781609/pattern/blob/master/doc/Proxy.jpg)
+   	![image](https://github.com/925781609/pattern/blob/master/doc/Proxy.jpg)
 
    代码实现:  关于动态代理的实现详见https://github.com/925781609/pattern/tree/master/src/main/java/pattern/proxy
 
@@ -331,25 +331,25 @@ public class DellMouseFactory implements MouseFactory{
    ```
 
  ##### 2.适配器模式
-   ​定义一个包装类， 把适配的类(Adaptee)的api转换成目标类(Target)的api
+定义一个包装类， 把适配的类(Adaptee)的api转换成目标类(Target)的api
 
-   强调的是兼容， 不改变原来的代码也能实现新的需求， 类似于VGA-HDMI
+强调的是兼容， 不改变原来的代码也能实现新的需求， 类似于VGA-HDMI
 
-   不想去修改老的比较稳定的系统，但是为了兼容新的需求和标准， 不得不在系统上再去做一些文章，向下兼容，
+不想去修改老的比较稳定的系统，但是为了兼容新的需求和标准， 不得不在系统上再去做一些文章，向下兼容，
 
-   原来的类如果不再使用， 需要打上Deprecated注解，
+原来的类如果不再使用， 需要打上Deprecated注解，
 
-   适配器模式有两种实现方式：
+1. UML图：
 
-      1. 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
+1) 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
 
-   ![img](https://github.com/925781609/pattern/blob/master/doc/Class%20Adapter.png)
+![img](https://github.com/925781609/pattern/blob/master/doc/Class%20Adapter.png)
 
-      2. 对象适配器：将原来的类注入进来，调用原来的方法
+2) 对象适配器：将原来的类注入进来，调用原来的方法
 
-   ![img](https://github.com/925781609/pattern/blob/master/doc/Object%20Adapter.png)
+![img](https://github.com/925781609/pattern/blob/master/doc/Object%20Adapter.png)
 
-    代码示例：
+2. 代码示例：
 
    ```java
    public interface Target {
@@ -379,17 +379,19 @@ public class DellMouseFactory implements MouseFactory{
    ```
 
  ##### 3.装饰器模式
-​     委派+适配器 为了扩展和增强，要满足is-a关系（同源同宗，也不一定有is-a关系，只要是增强就算）
 
-​     应用场景： IO流，DataSource是connection的装饰器，Spring中Detector结尾， Wrapper结尾
+​委派+适配器 为了扩展和增强，要满足is-a关系（同源同宗，也不一定有is-a关系，只要是增强就算）
 
-​     为了某个实现类在不修改原始类的基础上，进行动态地覆盖或增加方法原来的功能依旧对外开放， 依旧保留，新的功能同样也可以使用
+为了某个实现类在不修改原始类的基础上，进行动态地覆盖或增加方法原来的功能依旧对外开放， 依旧保留，新的功能同样也可以使用
+​	
 
-​     UML 图： （原始版本比较复杂，实际都是用其简化版）
+1. 应用场景： IO流，DataSource是connection的装饰器，Spring中Detector结尾， Wrapper结尾
+
+2. UML 图： （原始版本比较复杂，实际都是用其简化版
 
    ![img](https://github.com/925781609/pattern/blob/master/doc/Decorator.png)
 
-​      代码示例：
+3. 代码示例：
 
 ```java
 public interface Component {
@@ -426,3 +428,78 @@ public class ConcreteDecorator implements Component {
 | ----- | ------------- | ------------------------- | --------- |
 | 适配器模式 |               | 可以使用代理(has-a)或者继承(is-a)实现 | 注重的是兼容和转换 |
 
+#### 结构型模式：
+##### 1.策略模式
+
+准备一组算法，将每一个算法封装起来，让外部按需调用 ，     算法彼此之间可以互换（比如打折），用户对算法实现无需了解，只需要去选择
+
+1. 应用场景：
+
+   BeanFactory 根据用户配置去选择不同的beanFactory， 通常和抽象工厂模式结合使用
+
+   比如支付方式、登录方法， 比较器(sort 方法传comparator)
+
+2. UML图
+
+   ![image](https://github.com/925781609/pattern/blob/master/doc/Strategy.png)
+
+3. 代码示例
+
+   基于枚举的策略模式请参考： https://github.com/925781609/pattern/tree/master/src/main/java/pattern/strategy/enumbased
+
+   ```java
+   public interface Strategy {
+
+     double calcPrice(double booksPrice);
+
+   }
+
+   public class StrategyA implements Strategy {
+
+     @Override
+     public double calcPrice(double booksPrice) {
+       return booksPrice;
+     }
+
+   }
+
+   public class StrategB implements Strategy {
+
+     @Override
+     public double calcPrice(double booksPrice) {
+       return booksPrice * 0.9;
+     }
+
+   }
+
+   // context
+   public class Price {
+
+     //持有一个具体的策略对象
+     private Strategy strategy;
+
+     public Price(Strategy strategy) {
+       this.strategy = strategy;
+     }
+
+     //计算价格
+     public double quote(double booksPrice) {
+       return this.strategy.calcPrice(booksPrice);
+     }
+   }
+
+   // StrategyClinet
+   public class StrategyClient {
+
+     Strategy strategy = new StrategyA();
+     //创建环境
+     Price price = new Price(strategy);
+     //计算价格
+     double quote = price.quote(300);
+   }
+   ```
+
+##### 2.模板方法模式
+
+##### 3.委派模式
+##### 4.观察者模式
