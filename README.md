@@ -327,5 +327,53 @@ public class DellMouseFactory implements MouseFactory{
      }
    }
    ```
+
 2. ##### 适配器模式
+   ​定义一个包装类， 把适配的类(Adaptee)的api转换成目标类(Target)的api
+
+   强调的是兼容， 不改变原来的代码也能实现新的需求， 类似于VGA-HDMI
+
+   不想去修改老的比较稳定的系统，但是为了兼容新的需求和标准， 不得不在系统上再去做一些文章，向下兼容，
+
+   原来的类如果不再使用， 需要打上Deprecated注解，
+
+   适配器模式有两种实现方式：
+
+   1. 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Class%20Adapter.png)
+
+   2. 对象适配器：将原来的类注入进来，调用原来的方法
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Object%20Adapter.png)
+
+    代码示例：
+
+   ```java
+   public interface Target {
+
+     //这是源类Adapteee没有的方法 
+     public void Request();
+   }
+
+   // 源类
+   public class Adaptee {
+
+     public void SpecificRequest() {
+       System.out.println("SpecificRequest in Adaptee");
+     }
+   }
+
+   // 适配器类
+   //适配器Adapter继承自Adaptee，同时又实现了目标(Target)接口。 
+   public class Adapter extends Adaptee implements Target {
+
+     //所以适配器只是将SpecificRequest()方法作了一层封装，封装成Target可以调用的Request()而已 
+     @Override
+     public void Request() {
+       this.SpecificRequest();
+     }
+   }
+   ```
+
    ​
