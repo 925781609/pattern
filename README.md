@@ -213,22 +213,22 @@ public class DellMouseFactory implements MouseFactory{
       静态内部类：  内部类只有在外部类被调用时，才会被加载，内部类在方法 调用前被初始化
 
 
-     ```java
-     public class Singleton {
-    
-       // 私有构造方法，防止被实例化
-       private Singleton() {
-       }
-    
-       private static class SingletonHolder {
-         private static final Singleton INSTANCE = new Singleton();
-       }
-    
-       private static final Singleton getInstance() {
-         return SingletonHolder.INSTANCE;
-       }
-     }
-     ```
+```java
+ public class Singleton {
+
+   // 私有构造方法，防止被实例化
+   private Singleton() {
+   }
+
+   private static class SingletonHolder {
+     private static final Singleton INSTANCE = new Singleton();
+   }
+
+   private static final Singleton getInstance() {
+     return SingletonHolder.INSTANCE;
+   }
+ }
+```
 
  双重锁检查：
 
@@ -341,11 +341,11 @@ public class DellMouseFactory implements MouseFactory{
 
 1. UML图：
 
-1) 类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
+   1)  类适配器：继承原来的类，并且不覆写原来的方法，增加新的方法
 
 ![img](https://github.com/925781609/pattern/blob/master/doc/Class%20Adapter.png)
 
-2) 对象适配器：将原来的类注入进来，调用原来的方法
+​	2) 对象适配器：将原来的类注入进来，调用原来的方法
 
 ![img](https://github.com/925781609/pattern/blob/master/doc/Object%20Adapter.png)
 
@@ -500,6 +500,70 @@ public class ConcreteDecorator implements Component {
    ```
 
 ##### 2.模板方法模式
+
+流程固定，某一环节有差异，将相同部分的代码放在抽象的父类中，而将不同的代码放入不同的子类中。
+
+父类中定义模板方法，定义了子类方法的执行过程， 并且父类定义的模板方法不能被修改（final）
+
+1. 应用场景：jdbcTemplate，工作流，redisTemplate， Spring Template
+
+2. UML图
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Template%20Method.jpg)
+
+3. 代码示例：
+
+   ```java
+   public abstract class AbstractTemplate {
+
+     // 模板方法, 定义成final， 防止子类overwrite
+     final public void templateMethod() {
+       // 调用基本方法(由子类实现)
+       hookMethod();
+       // 调用基本方法(由子类实现)
+       abstractMethod();
+       // 调用基本方法(已经实现)
+       concreteMethod();
+     }
+
+     // 基本方法的声明（由子类实现，但抽象模板给出了默认实现）
+     public void hookMethod() {
+       System.out.println("Default hookMethod");
+     }
+
+     // 基本方法的声明（由子类实现）
+     public abstract void abstractMethod();
+
+     // 基本方法（已经实现）
+     public final void concreteMethod() {
+       System.out.println("AbstrateTemplate concreteMethod");
+     }
+   }
+
+   public class ConcreteTemplate extends AbstractTemplate {
+
+     @Override
+     public void abstractMethod() {
+       System.out.println("ConcreteTemplate abstractMethod");
+     }
+
+     /**
+      * 不使用父类默认实现的hookMethod，自己重新定义hookMethod
+      */
+     @Override
+     public void hookMethod() {
+       System.out.println("ConcreteTemplate hookMethod");
+     }
+
+   }
+
+   ```
+
+   **策略模式和模板方法模式的区别：**
+
+   策略模式只有选择权， 由用户自己选择已有的固定算法
+
+   模板模式： 可以参与某一部分的自定义，但无法改变流程
 
 ##### 3.委派模式
 ##### 4.观察者模式
