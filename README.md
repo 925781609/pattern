@@ -569,7 +569,7 @@ public class ConcreteDecorator implements Component {
 
 ##### 3.委派模式
 
-不是25种设计模式的一种，但是spring种比较常用
+不是23种设计模式的一种，但是spring种比较常用： 客户请求时Boss，DispatcherServlet是委派者， Controller是被委派者
 
 代理+ 策略：委派模式是代理模式特殊情况(委派者要持有被委派者的引用)，全权代理，通常有策略模式作干预。 
 
@@ -586,6 +586,7 @@ public class ConcreteDecorator implements Component {
 3. 代码示例：
 
    ```java
+   // 真正干活的员工
    // @RestController
    public class UserController {
 
@@ -595,6 +596,7 @@ public class ConcreteDecorator implements Component {
      }
    }
 
+   // 类似于项目经历分配任务
    public class DispatcherServlet {
 
      private List<Handler> handlerMapping = new LinkedList<>();
@@ -689,6 +691,7 @@ public class ConcreteDecorator implements Component {
    ```
 
    ​
+
 
 ##### 4.观察者模式
 

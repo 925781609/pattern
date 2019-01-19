@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pattern</groupId>
-  <artifactId>proxy</artifactId>
+  <artifactId>pattern</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>proxy</name>

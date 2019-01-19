@@ -36,10 +36,9 @@ public class DispatcherServlet {
     // 1、获取用户请求的URL
     String uri = request.getRequestURI();
 
-    //   根据用户请求的URL，去找到这个url对应的某一个java类的方法
 
-    // 2、Servlet拿到URL以后，要做权衡（要做判断，要做选择）
-    // 3、通过拿到的URL去handlerMapping（可以认为是策略常量）
+    // 2、Servlet拿到URL以后，要做选择，根据用户请求的URL，去找URL对应的java类的方法
+    // 3、通过拿到的URL去handlerMapping（策略常量：策略和对应代理的应用）
     Handler handle = null;
     for (Handler h : handlerMapping) {
       if (uri.equals(h.getUrl())) {
