@@ -695,3 +695,119 @@ public class ConcreteDecorator implements Component {
 
 ##### 4.观察者模式
 
+针对目标对象的一举一动， 要得到一个反馈，通常会和代理模式配合使用, 观察者和被观察者之间没有必然的联系， 
+
+1. 应用场景：
+
+事件监听， 日志监听， Observer，Springlistener(通常会结合动态代理), 短信通知， 邮件通知
+
+Event是事件，EventListener， 事件的注册和监听
+
+Mouse观察者， Callback被观察者
+
+2. UML图
+
+![img](https://github.com/925781609/pattern/blob/master/doc/Observer.png)
+
+3. 代码示例
+
+   ```java
+   public abstract class Subject {
+
+     /**
+      * 用来保存注册的观察者对象
+      */
+     private List<Observer> observers = new ArrayList<Observer>();
+
+     /**
+      * 注册观察者对象
+      *
+      * @param observer 观察者对象
+      */
+     public void attach(Observer observer) {
+
+       observers.add(observer);
+       System.out.println("Attached an observer");
+     }
+
+     /**
+      * 删除观察者对象
+      *
+      * @param observer 观察者对象
+      */
+     public void detach(Observer observer) {
+
+       observers.remove(observer);
+     }
+
+     /**
+      * 通知所有注册的观察者对象
+      */
+     public void nodifyObservers(String newState) {
+
+       for (Observer observer : observers) {
+         observer.update(newState);
+       }
+     }
+   }
+
+   public class ConcreteSubject extends Subject {
+
+     private String state;
+
+     public String getState() {
+       return state;
+     }
+
+     public void change(String newState) {
+       state = newState;
+       System.out.println("主题状态为：" + state);
+       //状态发生改变，通知各个观察者
+       this.nodifyObservers(state);
+     }
+   }
+
+   public interface Observer {
+
+     /**
+      * 更新接口
+      *
+      * @param state 更新的状态
+      */
+     public void update(String state);
+   }
+
+   public class ConcreteObserver implements Observer {
+
+     //观察者的状态
+     private String observerState;
+
+     @Override
+     public void update(String state) {
+       /**
+        * 更新观察者的状态，使其与目标的状态保持一致
+        */
+       observerState = state;
+       System.out.println("状态为：" + observerState);
+     }
+
+   }
+
+
+   public class Client {
+
+     public static void main(String[] args) {
+       //创建主题对象
+       ConcreteSubject subject = new ConcreteSubject();
+       //创建观察者对象
+       Observer observer = new ConcreteObserver();
+       //将观察者对象登记到主题对象上
+       subject.attach(observer);
+       //改变主题对象的状态
+       subject.change("new state");
+     }
+
+   }
+   ```
+
+   ​
