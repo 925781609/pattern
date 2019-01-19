@@ -798,8 +798,6 @@ Mouse观察者， Callback被观察者
      }
 
    }
-   ```
-
 
    public class Client {
 
@@ -816,6 +814,7 @@ Mouse观察者， Callback被观察者
 
    }
    ```
+   
 ##### 5. 责任链模式
 
 创建多个对象，使这些对象形成一条链，并沿着这条链传递请求，直到链上的某一个对象决定处理此请求。
@@ -830,7 +829,7 @@ Mouse观察者， Callback被观察者
 
 请假或报销，自己能处理则处理，处理不了则往上报
 
-2. UML图
+2. UML图（图片有误，子类覆写的是report方法handleMessage方法）
 
    ![img](https://github.com/925781609/pattern/blob/master/doc/Responsibility%20Chain.png)
 
