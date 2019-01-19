@@ -445,7 +445,7 @@ public class ConcreteDecorator implements Component {
 
 3. 代码示例
 
-   基于枚举的策略模式请参考： https://github.com/925781609/pattern/tree/master/src/main/java/pattern/strategy/enumbased
+   通过在Context种传入具体的策略，避免在内部使用if-else
 
    ```java
    public interface Strategy {
@@ -498,6 +498,8 @@ public class ConcreteDecorator implements Component {
      double quote = price.quote(300);
    }
    ```
+
+基于枚举的策略模式请参考： https://github.com/925781609/pattern/tree/master/src/main/java/pattern/strategy/enumbased
 
 ##### 2.模板方法模式
 
@@ -566,4 +568,127 @@ public class ConcreteDecorator implements Component {
    模板模式： 可以参与某一部分的自定义，但无法改变流程
 
 ##### 3.委派模式
+
+不是25种设计模式的一种，但是spring种比较常用
+
+代理+ 策略：委派模式是代理模式特殊情况(委派者要持有被委派者的引用)，全权代理，通常有策略模式作干预。 
+
+代理模式注重过程，而委派模式注重结果
+
+策略模式注重的是可扩展（外部扩展）， 委派模式注重内部的灵活和复用
+
+1. 应用场景：以Delegate/Dispatcher结尾的，NIO的selector就是委派模式
+
+2. UML图：（这里以Spring的DispatcherServlet为例）
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Delegate.png)
+
+3. 代码示例：
+
+   ```java
+   // @RestController
+   public class UserController {
+
+     // @RequestMapping(.....)
+     public Object getUserById(String id) {
+       return "Something";
+     }
+   }
+
+   public class DispatcherServlet {
+
+     private List<Handler> handlerMapping = new LinkedList<>();
+
+     public DispatcherServlet() {
+       try {
+         // 实际spring项目会在启动之初，扫描所有带RequestMapping注解的类，放到handlerMapping中
+         Class<?> userControllerClass = UserController.class;
+         handlerMapping.add(new Handler()
+             .setController(userControllerClass.newInstance())
+             .setMethod(userControllerClass.getMethod("getUserById", new Class[]{String.class}))
+             .setUrl("/api/user"));
+       } catch (Exception e) {
+
+       }
+     }
+
+
+     public void doService(HttpServletRequest request, HttpServletResponse response) {
+       doDispatch(request, response);
+     }
+
+
+     private void doDispatch(HttpServletRequest request, HttpServletResponse response) {
+
+       // 1、获取用户请求的URL
+       String uri = request.getRequestURI();
+
+       //   根据用户请求的URL，去找到这个url对应的某一个java类的方法
+
+       // 2、Servlet拿到URL以后，要做权衡（要做判断，要做选择）
+       // 3、通过拿到的URL去handlerMapping（可以认为是策略常量）
+       Handler handle = null;
+       for (Handler h : handlerMapping) {
+         if (uri.equals(h.getUrl())) {
+           handle = h;
+           break;
+         }
+       }
+
+       // 4、将具体的任务分发给Method（通过反射去调用其对应的方法）
+       Object object = null;
+       try {
+         object = handle.getMethod().invoke(handle.getController(), request.getParameter("mid"));
+       } catch (IllegalAccessException e) {
+         e.printStackTrace();
+       } catch (InvocationTargetException e) {
+         e.printStackTrace();
+       }
+
+       // 5、获取到Method执行的结果，通过Response返回出去
+       // response.getWriter().write();
+
+     }
+
+
+     class Handler {
+
+       private Object controller;
+       private Method method;
+       private String url;
+
+       public Object getController() {
+         return controller;
+       }
+
+       public Handler setController(Object controller) {
+         this.controller = controller;
+         return this;
+       }
+
+       public Method getMethod() {
+         return method;
+       }
+
+       public Handler setMethod(Method method) {
+         this.method = method;
+         return this;
+       }
+
+       public String getUrl() {
+         return url;
+       }
+
+       public Handler setUrl(String url) {
+         this.url = url;
+         return this;
+       }
+     }
+
+   }
+   ```
+
+   ​
+
 ##### 4.观察者模式
+

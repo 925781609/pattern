@@ -4,8 +4,8 @@ package pattern.delegate;
 public class UserController {
 
   // @RequestMapping(.....)
-  public void getUserById(String id) {
-
+  public Object getUserById(String id) {
+    return "Something";
   }
 
 }
