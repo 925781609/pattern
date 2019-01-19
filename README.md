@@ -428,7 +428,16 @@ public class ConcreteDecorator implements Component {
 | ----- | ------------- | ------------------------- | --------- |
 | 适配器模式 |               | 可以使用代理(has-a)或者继承(is-a)实现 | 注重的是兼容和转换 |
 
+##### 4. 门面模式
+
+1. 应用场景
+2. UML图
+3. 代码示例
+
+
+
 #### 结构型模式：
+
 ##### 1.策略模式
 
 准备一组算法，将每一个算法封装起来，让外部按需调用 ，     算法彼此之间可以互换（比如打折），用户对算法实现无需了解，只需要去选择
@@ -613,6 +622,7 @@ public class ConcreteDecorator implements Component {
 
        }
      }
+   ```
 
 
      public void doService(HttpServletRequest request, HttpServletResponse response) {
@@ -624,9 +634,9 @@ public class ConcreteDecorator implements Component {
 
        // 1、获取用户请求的URL
        String uri = request.getRequestURI();
-
+    
        //   根据用户请求的URL，去找到这个url对应的某一个java类的方法
-
+    
        // 2、Servlet拿到URL以后，要做权衡（要做判断，要做选择）
        // 3、通过拿到的URL去handlerMapping（可以认为是策略常量）
        Handler handle = null;
@@ -636,7 +646,7 @@ public class ConcreteDecorator implements Component {
            break;
          }
        }
-
+    
        // 4、将具体的任务分发给Method（通过反射去调用其对应的方法）
        Object object = null;
        try {
@@ -646,10 +656,10 @@ public class ConcreteDecorator implements Component {
        } catch (InvocationTargetException e) {
          e.printStackTrace();
        }
-
+    
        // 5、获取到Method执行的结果，通过Response返回出去
        // response.getWriter().write();
-
+    
      }
 
 
@@ -658,29 +668,29 @@ public class ConcreteDecorator implements Component {
        private Object controller;
        private Method method;
        private String url;
-
+    
        public Object getController() {
          return controller;
        }
-
+    
        public Handler setController(Object controller) {
          this.controller = controller;
          return this;
        }
-
+    
        public Method getMethod() {
          return method;
        }
-
+    
        public Handler setMethod(Method method) {
          this.method = method;
          return this;
        }
-
+    
        public String getUrl() {
          return url;
        }
-
+    
        public Handler setUrl(String url) {
          this.url = url;
          return this;
@@ -688,10 +698,6 @@ public class ConcreteDecorator implements Component {
      }
 
    }
-   ```
-
-   ​
-
 
 ##### 4.观察者模式
 
@@ -792,6 +798,7 @@ Mouse观察者， Callback被观察者
      }
 
    }
+   ```
 
 
    public class Client {
@@ -807,6 +814,98 @@ Mouse观察者， Callback被观察者
        subject.change("new state");
      }
 
+   }
+   ```
+##### 5. 责任链模式
+
+创建多个对象，使这些对象形成一条链，并沿着这条链传递请求，直到链上的某一个对象决定处理此请求。
+
+纯责任链模式： 如果一个类要么承担责任处理请求要么将请求踢给下一个皮球
+
+非纯责任链模式：如果一个类承担了一部分责任，还将请求踢给下一个皮球
+
+1. 应用场景： 
+
+会员等级系统，会员等级之间构成一条链，用户发起一个请求，直到传递到与用户会员匹配的等级
+
+请假或报销，自己能处理则处理，处理不了则往上报
+
+2. UML图
+
+   ![img](https://github.com/925781609/pattern/blob/master/doc/Responsibility%20Chain.png)
+
+3. 代码示例
+
+   ```java
+   public abstract class Handler {
+
+     private Handler nextHandler;
+     private int level;
+
+     public Handler(int level) {
+       this.level = level;
+     }
+
+     // 处理请求传递，注意final，子类不可重写
+     public final void handleMessage(Request request) {
+       if (level == request.getLevel()) {
+         this.report(request);
+       } else {
+         if (this.nextHandler != null) {
+           System.out.println("自己无法处理，传递给下一级");
+           this.nextHandler.handleMessage(request);
+         } else {
+           System.out.println("处理链到达尽头，无法处理请求");
+         }
+       }
+     }
+
+     public void setNextHandler(Handler handler) {
+       this.nextHandler = handler;
+     }
+
+     // 抽象方法，子类实现
+     public abstract void report(Request request);
+
+   }
+
+   public class Leader extends Handler {
+
+     public Leader() {
+       super(1);
+     }
+
+     @Override
+     public void report(Request request) {
+       System.out.println("Leader 处理：" + request.getDetail());
+     }
+   }
+
+   public class Boss extends Handler {
+
+     public Boss() {
+       super(2);
+     }
+
+     @Override
+     public void report(Request request) {
+       System.out.println("Boss 处理：" + request.getDetail());
+     }
+   }
+
+   public class Client {
+
+     public static void main(String[] args) {
+       Request requestLevel2 = new Request(2, "Level 2的请求"); // 请求等级高
+
+       Boss boss = new Boss();
+       Leader leader = new Leader();
+       // 设置下一级， 建立职责链
+       leader.setNextHandler(boss);
+
+       System.out.println("==============开始处理请求=========");
+       leader.handleMessage(requestLevel2);
+     }
    }
    ```
 
