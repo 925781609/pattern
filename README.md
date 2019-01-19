@@ -286,7 +286,7 @@ public class DellMouseFactory implements MouseFactory{
 
    UML：
 
-   	![image](https://github.com/925781609/pattern/blob/master/doc/Proxy.jpg)
+![img](https://github.com/925781609/pattern/blob/master/doc/Proxy.jpg)
 
    代码实现:  关于动态代理的实现详见https://github.com/925781609/pattern/tree/master/src/main/java/pattern/proxy
 
